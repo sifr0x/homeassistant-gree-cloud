@@ -47,6 +47,8 @@ from .const import (
     DISPATCH_DEVICE_DISCOVERED,
     FAN_MEDIUM_HIGH,
     FAN_MEDIUM_LOW,
+    INDOOR_TEMP_OFFSET,
+    PROP_INDOOR_TEMP,
     TARGET_TEMPERATURE_STEP,
     TARGET_TEMPERATURE_STEP_HALF,
 )
@@ -194,6 +196,11 @@ class GreeCloudClimateEntity(GreeCloudEntity, ClimateEntity):
     @property
     def current_temperature(self) -> float:
         """Return the reported current temperature for the device."""
+        # Commercial/VRF indoor units report the room temperature as InTem
+        # instead of TemSen; without it greeclimate falls back to the setpoint.
+        indoor = (self.coordinator.device.raw_properties or {}).get(PROP_INDOOR_TEMP)
+        if indoor:
+            return indoor - INDOOR_TEMP_OFFSET
         return self.coordinator.device.current_temperature
 
     @property

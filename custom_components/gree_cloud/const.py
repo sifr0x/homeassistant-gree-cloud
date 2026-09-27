@@ -53,6 +53,10 @@ ENERGY_SCALE = 0.1
 # it is actually running, so it tracks load far more responsively than the
 # energy counter, which only moves in whole 0.1 kWh steps.
 PROP_COMPRESSOR_FREQ = "CompressorFqy"
+# Indoor (return air) temperature reported by commercial/VRF indoor units that do
+# not report TemSen. Same +40 offset as TemSen; 0 means "not reported".
+PROP_INDOOR_TEMP = "InTem"
+INDOOR_TEMP_OFFSET = 40
 
 # Relative humidity. Already part of the standard Props enum (HUM_SENSOR), so
 # it needs no extra request - only an entity to surface it.
